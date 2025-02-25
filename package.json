@@ -7,8 +7,8 @@
     "build": "tsc --build",
     "start": "node ./dist/index.js",
     "dev": "nodemon ./src/server.ts",
-     "prisma": "prisma generate --schema=src/prisma/schema.prisma",
-  "migrate": "prisma migrate dev --schema=src/prisma/schema.prisma"
+    "prisma": "prisma generate --schema=src/prisma/schema.prisma",
+    "migrate": "prisma migrate dev --schema=src/prisma/schema.prisma"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +16,7 @@
   "description": "",
   "dependencies": {
     "@prisma/client": "^6.4.1",
+    "bcryptjs": "^3.0.2",
     "express": "^4.21.2",
     "pg": "^8.13.3",
     "prisma": "^6.4.1"

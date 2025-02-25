@@ -1,4 +1,3 @@
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -14,38 +13,36 @@ enum Role {
 }
 
 model User {
-  UserId   Int      @id @default(autoincrement())
-  Name String
-  Phone        String
-  Email        String
-  Password     String
-  Role          Role  @default(EMPLOYEE)
-  invoices     Invoices[]
+  UserId            String              @id @default(uuid())
+  Name              String
+  Phone             Int
+  Email             String
+  Password          String
+  Role              Role                @default(EMPLOYEE)
+  invoices          Invoices[]
   inventoryReceipts InventoryReceipts[]
 }
 
 model Suppliers {
-  SupplierId   Int             @id @default(autoincrement())
+  SupplierId   String              @id @default(uuid())
   SupplierName String
-  Phone        String
+  Phone        Int
   Email        String
   receipts     InventoryReceipts[]
 }
 
 model Products {
-  ProductId     Int                 @id @default(autoincrement())
-  ProductName   String
-  CategoryId    Int
-  StockQuantity Int
-  SerialNumber  String
-  MinStockLevel Int
+  ProductId      Int                     @id @default(autoincrement())
+  ProductName    String
+  CategoryId     Int
+  StockQuantity  Int
+  SerialNumber   String
+  MinStockLevel  Int
   ExpirationDate DateTime
-  Category      Categories          @relation(fields: [CategoryId], references: [CategoryId])
-  invoiceItems  InvoiceItems[]
-  receiptItems  InventoryReceiptItems[]
+  Category       Categories              @relation(fields: [CategoryId], references: [CategoryId])
+  invoiceItems   InvoiceItems[]
+  receiptItems   InventoryReceiptItems[]
 }
-
-
 
 model Categories {
   CategoryId   Int        @id @default(autoincrement())
@@ -54,39 +51,38 @@ model Categories {
 }
 
 model Invoices {
-  InvoiceId   Int       @id @default(autoincrement())
-  InvoiceDate DateTime  @default(now())
-  UserId  Int
-  Employee    User @relation(fields: [UserId], references: [UserId])
+  InvoiceId   String         @id @default(uuid())
+  InvoiceDate DateTime       @default(now())
+  UserId      String
+  Employee    User           @relation(fields: [UserId], references: [UserId])
   items       InvoiceItems[]
 }
 
 model InvoiceItems {
-  InvoiceItemId Int      @id @default(autoincrement())
-  InvoiceId     Int
+  InvoiceItemId Int @id @default(autoincrement())
   ProductId     Int
   Quantity      Int
-  Invoice       Invoices @relation(fields: [InvoiceId], references: [InvoiceId])
-  Product       Products @relation(fields: [ProductId], references: [ProductId])
+
+  InvoiceId String
+  Invoice   Invoices @relation(fields: [InvoiceId], references: [InvoiceId])
+  Product   Products @relation(fields: [ProductId], references: [ProductId])
 }
 
-
-
 model InventoryReceipts {
-  ReceiptId    Int                  @id @default(autoincrement())
-  SupplierId   Int
-  UserId   Int
-  ReceiptDate  DateTime             @default(now())
-  Supplier     Suppliers            @relation(fields: [SupplierId], references: [SupplierId])
-  Employee     User            @relation(fields: [UserId], references: [UserId])
+  ReceiptId    Int                     @id @default(autoincrement())
+  ReceiptDate  DateTime                @default(now())
+  SupplierId   String
+  Supplier     Suppliers               @relation(fields: [SupplierId], references: [SupplierId])
+  UserId       String
+  Employee     User                    @relation(fields: [UserId], references: [UserId])
   receiptItems InventoryReceiptItems[]
 }
 
 model InventoryReceiptItems {
-  ReceiptItemId   Int         @id @default(autoincrement())
-  ReceiptId       Int
-  ProductId       Int
+  ReceiptItemId    Int               @id @default(autoincrement())
+  ReceiptId        Int
+  ProductId        Int
   QuantityReceived Int
-  Receipt         InventoryReceipts @relation(fields: [ReceiptId], references: [ReceiptId])
-  Product         Products         @relation(fields: [ProductId], references: [ProductId])
+  Receipt          InventoryReceipts @relation(fields: [ReceiptId], references: [ReceiptId])
+  Product          Products          @relation(fields: [ProductId], references: [ProductId])
 }
