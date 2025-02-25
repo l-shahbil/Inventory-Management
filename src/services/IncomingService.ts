@@ -29,5 +29,40 @@ export const Incomings = {
                 ReceiptDate: "desc", 
             },
         });
-    }
+    },
+
+    async createIncoming(userId: number, supplierId: number, items: { ProductId: number; QuantityReceived: number }[]) {
+        return await prisma.$transaction(async (tx) => {
+            const receipt = await tx.inventoryReceipts.create({
+                data: {
+                    UserId: String(userId), 
+                    SupplierId: String(supplierId), 
+                },
+            });
+
+            const receiptItems = await Promise.all(
+                items.map(async (item) => {
+                    return await tx.inventoryReceiptItems.create({
+                        data: {
+                            ReceiptId: receipt.ReceiptId,
+                            ProductId: item.ProductId,
+                            QuantityReceived: item.QuantityReceived,
+                        },
+                    });
+                })
+            );
+
+            await Promise.all(
+                items.map(async (item) => {
+                    return await tx.products.update({
+                        where: { ProductId: item.ProductId },
+                        data: { StockQuantity: { increment: item.QuantityReceived } }, 
+                    });
+                })
+            );
+
+            return { receipt, receiptItems };
+        });
+    },
+
 };
