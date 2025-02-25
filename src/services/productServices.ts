@@ -22,4 +22,5 @@ export const ProductService = {
   async delete(id: number) {
     return prisma.products.delete({ where: { ProductId: id } });
   },
+  
 };
