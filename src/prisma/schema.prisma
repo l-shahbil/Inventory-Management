@@ -1,0 +1,88 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
+}
+
+model User {
+  UserId            String              @id @default(uuid())
+  Name              String
+  Phone             Int
+  Email             String
+  Password          String
+  Role              Role                @default(EMPLOYEE)
+  invoices          Invoices[]
+  inventoryReceipts InventoryReceipts[]
+}
+
+model Suppliers {
+  SupplierId   String              @id @default(uuid())
+  SupplierName String
+  Phone        Int
+  Email        String
+  receipts     InventoryReceipts[]
+}
+
+model Products {
+  ProductId      Int                     @id @default(autoincrement())
+  ProductName    String
+  CategoryId     Int
+  StockQuantity  Int
+  SerialNumber   String
+  MinStockLevel  Int
+  ExpirationDate DateTime
+  Category       Categories              @relation(fields: [CategoryId], references: [CategoryId])
+  invoiceItems   InvoiceItems[]
+  receiptItems   InventoryReceiptItems[]
+}
+
+model Categories {
+  CategoryId   Int        @id @default(autoincrement())
+  CategoryName String
+  products     Products[]
+}
+
+model Invoices {
+  InvoiceId   String         @id @default(uuid())
+  InvoiceDate DateTime       @default(now())
+  UserId      String
+  Employee    User           @relation(fields: [UserId], references: [UserId])
+  items       InvoiceItems[]
+}
+
+model InvoiceItems {
+  InvoiceItemId Int @id @default(autoincrement())
+  ProductId     Int
+  Quantity      Int
+
+  InvoiceId String
+  Invoice   Invoices @relation(fields: [InvoiceId], references: [InvoiceId])
+  Product   Products @relation(fields: [ProductId], references: [ProductId])
+}
+
+model InventoryReceipts {
+  ReceiptId    Int                     @id @default(autoincrement())
+  ReceiptDate  DateTime                @default(now())
+  SupplierId   String
+  Supplier     Suppliers               @relation(fields: [SupplierId], references: [SupplierId])
+  UserId       String
+  Employee     User                    @relation(fields: [UserId], references: [UserId])
+  receiptItems InventoryReceiptItems[]
+}
+
+model InventoryReceiptItems {
+  ReceiptItemId    Int               @id @default(autoincrement())
+  ReceiptId        Int
+  ProductId        Int
+  QuantityReceived Int
+  Receipt          InventoryReceipts @relation(fields: [ReceiptId], references: [ReceiptId])
+  Product          Products          @relation(fields: [ProductId], references: [ProductId])
+}
