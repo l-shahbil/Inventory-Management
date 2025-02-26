@@ -1,14 +1,27 @@
 import express from 'express';
+import cors from 'cors';
 
 import employeeRoutes from './routes/employeeRoutes';
-import supplierRoutes from "./routes/supplierRoutes"
+import supplierRoutes from "./routes/supplierRoutes";
 import productRoutes from './routes/productRoutes';
-import categoryRoutes from "./routes/categoryRoutes"
-import MinInvetoryRoutes from './routes/MinInvetoryRoutes'
-import InvoiceRoutes from './routes/InvoiceRoutes'
-import IncomingRoutes from './routes/IncomingRoutes'
+import categoryRoutes from "./routes/categoryRoutes";
+import MinInvetoryRoutes from './routes/MinInvetoryRoutes';
+import InvoiceRoutes from './routes/InvoiceRoutes';
+import IncomingRoutes from './routes/IncomingRoutes';
 
 const app = express();
+
+
+app.use(cors());
+
+
+app.use(cors({
+    origin: "*",  // بعدين بنغيره لرابط الفرونت 
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true
+  }));
+  
+
 
 app.use(express.json());
 
@@ -19,6 +32,5 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/MinInvetory', MinInvetoryRoutes);
 app.use('/api/Invoice', InvoiceRoutes);
 app.use('/api/Incoming', IncomingRoutes);
-
 
 export default app;
