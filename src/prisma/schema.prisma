@@ -16,7 +16,7 @@ model User {
   UserId            String              @id @default(uuid())
   Name              String
   Phone             Int
-  Email             String
+  Email             String              @unique
   Password          String
   Role              Role                @default(EMPLOYEE)
   invoices          Invoices[]
@@ -25,7 +25,7 @@ model User {
 
 model Suppliers {
   SupplierId   String              @id @default(uuid())
-  SupplierName String
+  SupplierName String              @unique
   Phone        Int
   Email        String
   receipts     InventoryReceipts[]

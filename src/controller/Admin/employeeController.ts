@@ -1,11 +1,7 @@
 import { Request, Response } from 'express';
-import * as EmployeeService from '../services/employeeServices';
-import { Messages } from '../constants/messages';
-import { HTTP_STATUS_CODES} from "../constants/statusCode"
-import { Prisma, PrismaClient } from '@prisma/client';
-import { ok } from 'assert';
-
-const prisma = new PrismaClient();
+import * as EmployeeService from '../../services/Admin/employeeServices';
+import { Messages } from '../../constants/messages';
+import { HTTP_STATUS_CODES} from "../../constants/statusCode"
 
 
 export async function addEmployee(req: Request, res: Response){
@@ -16,7 +12,7 @@ export async function addEmployee(req: Request, res: Response){
       message: Messages.SUCCESS.CREATE_SUCCESS,
       newEmployee,
     });
-  } catch (error) {
+  } catch (error:any) {
     res.status(HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR).json({
       error: Messages.ERROR.INTERNAL_ERROR,
     });

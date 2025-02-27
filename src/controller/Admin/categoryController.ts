@@ -1,5 +1,5 @@
 import { Request , Response } from "express";
-import { categoryService } from "../services/categoryServices";
+import { categoryService } from "../../services/Admin/categoryServices";
 
 export const CategoryController={
     async getAll(req:Request , res:Response) {

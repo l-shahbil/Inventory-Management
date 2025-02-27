@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Incomings } from "../services/IncomingService";
+import { Incomings } from "../../services/Admin/IncomingService";
 
 export const IncomingController = {
     async getIncomingReport(req: Request, res: Response) {

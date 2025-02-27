@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { SalesService } from "../services/InvoiceServises";
+import { SalesService } from "../../services/Admin/InvoiceServises";
 
 export const InvoiceController = {
     async getAll(req: Request, res: Response) {

@@ -1,10 +1,8 @@
 import { Request, Response } from 'express';
-import * as supplierServices from '../services/supplierServices';
-import { Messages } from '../constants/messages';
-import { HTTP_STATUS_CODES} from "../constants/statusCode"
-import { PrismaClient } from '@prisma/client';
-import { createSupplier } from '../services/supplierServices';
-const prisma = new PrismaClient();
+import * as supplierServices from '../../services/Admin/supplierServices';
+import { Messages } from '../../constants/messages';
+import { HTTP_STATUS_CODES} from "../../constants/statusCode"
+
 
 
 export async function addsupplier(req: Request, res: Response){
