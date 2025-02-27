@@ -3,9 +3,9 @@ CREATE TYPE "Role" AS ENUM ('ADMIN', 'EMPLOYEE');
 
 -- CreateTable
 CREATE TABLE "User" (
-    "UserId" SERIAL NOT NULL,
+    "UserId" TEXT NOT NULL,
     "Name" TEXT NOT NULL,
-    "Phone" TEXT NOT NULL,
+    "Phone" INTEGER NOT NULL,
     "Email" TEXT NOT NULL,
     "Password" TEXT NOT NULL,
     "Role" "Role" NOT NULL DEFAULT 'EMPLOYEE',
@@ -15,9 +15,9 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "Suppliers" (
-    "SupplierId" SERIAL NOT NULL,
+    "SupplierId" TEXT NOT NULL,
     "SupplierName" TEXT NOT NULL,
-    "Phone" TEXT NOT NULL,
+    "Phone" INTEGER NOT NULL,
     "Email" TEXT NOT NULL,
 
     CONSTRAINT "Suppliers_pkey" PRIMARY KEY ("SupplierId")
@@ -46,9 +46,9 @@ CREATE TABLE "Categories" (
 
 -- CreateTable
 CREATE TABLE "Invoices" (
-    "InvoiceId" SERIAL NOT NULL,
+    "InvoiceId" TEXT NOT NULL,
     "InvoiceDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "UserId" INTEGER NOT NULL,
+    "UserId" TEXT NOT NULL,
 
     CONSTRAINT "Invoices_pkey" PRIMARY KEY ("InvoiceId")
 );
@@ -56,9 +56,9 @@ CREATE TABLE "Invoices" (
 -- CreateTable
 CREATE TABLE "InvoiceItems" (
     "InvoiceItemId" SERIAL NOT NULL,
-    "InvoiceId" INTEGER NOT NULL,
     "ProductId" INTEGER NOT NULL,
     "Quantity" INTEGER NOT NULL,
+    "InvoiceId" TEXT NOT NULL,
 
     CONSTRAINT "InvoiceItems_pkey" PRIMARY KEY ("InvoiceItemId")
 );
@@ -66,9 +66,9 @@ CREATE TABLE "InvoiceItems" (
 -- CreateTable
 CREATE TABLE "InventoryReceipts" (
     "ReceiptId" SERIAL NOT NULL,
-    "SupplierId" INTEGER NOT NULL,
-    "UserId" INTEGER NOT NULL,
     "ReceiptDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "SupplierId" TEXT NOT NULL,
+    "UserId" TEXT NOT NULL,
 
     CONSTRAINT "InventoryReceipts_pkey" PRIMARY KEY ("ReceiptId")
 );
@@ -82,6 +82,18 @@ CREATE TABLE "InventoryReceiptItems" (
 
     CONSTRAINT "InventoryReceiptItems_pkey" PRIMARY KEY ("ReceiptItemId")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_Email_key" ON "User"("Email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Suppliers_SupplierName_key" ON "Suppliers"("SupplierName");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Products_ProductName_key" ON "Products"("ProductName");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Categories_CategoryName_key" ON "Categories"("CategoryName");
 
 -- AddForeignKey
 ALTER TABLE "Products" ADD CONSTRAINT "Products_CategoryId_fkey" FOREIGN KEY ("CategoryId") REFERENCES "Categories"("CategoryId") ON DELETE RESTRICT ON UPDATE CASCADE;

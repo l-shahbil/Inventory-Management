@@ -33,7 +33,7 @@ model Suppliers {
 
 model Products {
   ProductId      Int                     @id @default(autoincrement())
-  ProductName    String
+  ProductName    String                  @unique
   CategoryId     Int
   StockQuantity  Int
   SerialNumber   String
@@ -46,7 +46,7 @@ model Products {
 
 model Categories {
   CategoryId   Int        @id @default(autoincrement())
-  CategoryName String
+  CategoryName String     @unique
   products     Products[]
 }
 

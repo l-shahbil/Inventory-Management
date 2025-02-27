@@ -4,7 +4,12 @@ const prisma = new PrismaClient();
 
 export const ProductService = {
   async getAll() {
-    return prisma.products.findMany({ include: { Category: true } });
+    return prisma.products.findMany({ include: 
+      { Category: {
+        select:{
+          CategoryName:true
+        }
+    } } });
   },
 
   async getById(id: number) {
