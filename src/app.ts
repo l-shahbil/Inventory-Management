@@ -6,8 +6,8 @@ import supplierRoutes from "./routes/Admin/supplierRoutes"
 import productRoutes from './routes/Admin/productRoutes';
 import categoryRoutes from "./routes/Admin/categoryRoutes"
 import MinInvetoryRoutes from './routes/Admin/MinInvetoryRoutes'
-import InvoiceRoutes from './routes/Admin/InvoiceRoutes'
-import IncomingRoutes from './routes/Admin/IncomingRoutes'
+import InvoiceRoutes from './routes/InvoiceRoutes'
+import IncomingRoutes from './routes/IncomingRoutes'
 import authRoutes from './routes/Auth/authRoutes';
 import { seedAdmin } from './services/seedAdminService';
 
