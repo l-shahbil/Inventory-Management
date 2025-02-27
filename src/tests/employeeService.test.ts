@@ -1,4 +1,4 @@
-import { createEmployee, updateEmployee, removeEmployee, getEmployees } from '../services/employeeServices';
+import { createEmployee, updateEmployee, removeEmployee, getEmployees } from '../services/Admin/employeeServices';
 
 jest.mock('@prisma/client', () => {
     return {

@@ -1,4 +1,4 @@
-import { MinInventoryService } from '../services/MinInvetoryServices';
+import { MinInventoryService } from '../services/Admin/MinInvetoryServices';
 
 jest.mock('@prisma/client', () => {
   return {

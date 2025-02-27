@@ -1,4 +1,4 @@
-import { SalesService } from '../services/InvoiceServises';
+import { InvoiceService } from '../services/InvoiceServises';
 
 jest.mock('@prisma/client', () => {
   return {
@@ -28,7 +28,7 @@ jest.mock('@prisma/client', () => {
 
 describe('Sales Service', () => {
   test('should return all sales invoices', async () => {
-    const sales = await SalesService.getAllSales();
+    const sales = await InvoiceService.getAllSales();
     expect(sales).toHaveLength(1);
     expect(sales[0]).toHaveProperty('InvoiceDate', '2025-02-15');
     expect(sales[0].Employee).toHaveProperty('Name', 'Ahmed');

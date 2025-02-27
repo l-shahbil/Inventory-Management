@@ -1,4 +1,4 @@
-import { ProductService } from '../services/productServices';
+import { ProductService } from '../services/Admin/productServices';
 
 jest.mock('@prisma/client', () => {
   return {

@@ -1,4 +1,4 @@
-import { createSupplier, updateSuplier, removesupplier, getsuppliers } from '../services/supplierServices';
+import { createSupplier, updateSuplier, removesupplier, getsuppliers } from '../services/Admin/supplierServices';
 
 jest.mock('@prisma/client', () => {
   return {

@@ -1,4 +1,4 @@
-import { categoryService } from '../services/categoryServices';
+import { categoryService } from '../services/Admin/categoryServices';
 
 jest.mock('@prisma/client', () => {
   return {
