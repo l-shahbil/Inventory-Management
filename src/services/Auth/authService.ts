@@ -6,29 +6,33 @@ import { config } from '../../config/config';
 const prisma = new PrismaClient();
 
 export const authenticateUser = async (email: string, password: string) => {
+    if (!email) {
+        throw new Error('Email is required');
+    }
+
     const user = await prisma.user.findUnique({
-      where: { Email: email },
+        where: { Email: email }, 
     });
 
-  if (!user) {
-    throw new Error('Invalid email or password');
-  }
+    if (!user) {
+        throw new Error('Invalid email or password');
+    }
 
-  const isMatch = await bcrypt.compare(password, user.Password);
+    const isMatch = await bcrypt.compare(password, user.Password);
 
-  if (!isMatch) {
-    throw new Error('Invalid email or password');
-  }
+    if (!isMatch) {
+        throw new Error('Invalid email or password');
+    }
 
-  const token = jwt.sign(
-    { userId: user.UserId, role: user.Role },
-    config.jwtSecret,
-    { expiresIn: '1h' }
-  );
+    const token = jwt.sign(
+        { userId: user.UserId, role: user.Role },
+        config.jwtSecret,
+        { expiresIn: '1h' }
+    );
 
-  return token;
+    return token;
 };
 
 export const verifyToken = (token: string) => {
-  return jwt.verify(token, config.jwtSecret);
+    return jwt.verify(token, config.jwtSecret);
 };
