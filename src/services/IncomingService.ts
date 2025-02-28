@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient,Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -32,7 +32,7 @@ export const Incomings = {
     },
 
     async createIncoming(userId: number, supplierId: number, items: { ProductId: number; QuantityReceived: number }[]) {
-        return await prisma.$transaction(async (tx) => {
+        return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
             const receipt = await tx.inventoryReceipts.create({
                 data: {
                     UserId: String(userId), 
