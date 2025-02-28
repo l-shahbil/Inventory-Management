@@ -6,9 +6,9 @@ import { config } from '../../config/config';
 const prisma = new PrismaClient();
 
 export const authenticateUser = async (email: string, password: string) => {
-    const user = await prisma.user.findUnique({
-      where: { Email: email },
-    });
+  const user = await prisma.user.findUnique({
+    where: { Email: email },
+  });
 
   if (!user) {
     throw new Error('Invalid email or password');
