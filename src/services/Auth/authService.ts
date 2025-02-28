@@ -1,34 +1,42 @@
-import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { config } from '../../config/config';
+import { PrismaClient, Prisma } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export const authenticateUser = async (email: string, password: string) => {
-  const user = await prisma.user.findUnique({
-    where: { Email: email },
-  });
+    if (!email || !password) {
+        throw new Error('Email and password are required.');
+    }
 
-  if (!user) {
-    throw new Error('Invalid email or password');
-  }
+    const formattedEmail = email.trim().toLowerCase();
 
-  const isMatch = await bcrypt.compare(password, user.Password);
+    try {
+        const where: Prisma.UserWhereUniqueInput = { Email: formattedEmail };
 
-  if (!isMatch) {
-    throw new Error('Invalid email or password');
-  }
+        const user = await prisma.user.findUnique({ where });
 
-  const token = jwt.sign(
-    { userId: user.UserId, role: user.Role },
-    config.jwtSecret,
-    { expiresIn: '1h' }
-  );
+        if (!user) {
+            throw new Error('Invalid email or password.');
+        }
 
-  return token;
-};
+        const isMatch = await bcrypt.compare(password, user.Password);
 
-export const verifyToken = (token: string) => {
-  return jwt.verify(token, config.jwtSecret);
+        if (!isMatch) {
+            throw new Error('Invalid email or password.');
+        }
+
+        const token = jwt.sign(
+            { userId: user.UserId, role: user.Role },
+            config.jwtSecret,
+            { expiresIn: '1h' }
+        );
+
+        return token;
+    } catch (error) {
+        throw new Error(`Authentication failed: ${(error as Error).message}`);
+    } finally {
+        await prisma.$disconnect();
+    }
 };
